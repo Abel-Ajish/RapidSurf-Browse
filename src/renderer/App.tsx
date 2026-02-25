@@ -33,9 +33,12 @@ const App: React.FC = () => {
   const [pinnedIcons, setPinnedIcons] = useState<string[]>(['bookmarks', 'history', 'find', 'screenshot', 'reading', 'summarize', 'panel', 'theme', 'settings'])
   const [readingProgress, setReadingProgress] = useState(0)
 
+  const activeTab = tabs.find(t => t.active)
+  const isNewTab = !activeTab || activeTab?.url === 'rapidsurf://newtab' || activeTab?.url === 'about:blank'
+
   useEffect(() => {
-    window.browser.setAIActive(isSummarizing || !!summary || !!screenshot || !!readingContent || showSettings || showHistory)
-  }, [isSummarizing, summary, screenshot, readingContent, showSettings, showHistory])
+    window.browser.setAIActive(isSummarizing || !!summary || !!screenshot || !!readingContent || showSettings || showHistory || showBookmarks || isNewTab)
+  }, [isSummarizing, summary, screenshot, readingContent, showSettings, showHistory, showBookmarks, isNewTab])
 
   useEffect(() => {
     document.body.setAttribute('data-theme', theme)
@@ -167,8 +170,6 @@ const App: React.FC = () => {
     window.browser.saveSession({ tabs })
   }, [tabs])
 
-  const activeTab = tabs.find(t => t.active)
-
   return (
     <div className="app-container">
       <div className="chrome-area">
@@ -214,7 +215,7 @@ const App: React.FC = () => {
       
       <div className="content-area">
         {/* BrowserViews are rendered here by the main process */}
-        {(activeTab?.url === 'rapidsurf://newtab' || activeTab?.url === 'about:blank') && (
+        {(!activeTab || activeTab?.url === 'rapidsurf://newtab' || activeTab?.url === 'about:blank') && (
           <NewTabPage 
             onNavigate={(url) => window.browser.go(url)}
             theme={theme}

@@ -49,21 +49,30 @@ const Navbar: React.FC<NavbarProps> = ({
   }, [url])
 
   const checkBookmark = async () => {
-    const bms = await window.browser.getBookmarks()
-    setIsBookmarked(bms.some((bm: any) => bm.url === url))
+    try {
+      const bms = await window.browser.getBookmarks()
+      setIsBookmarked(Array.isArray(bms) && bms.some((bm: any) => bm.url === url))
+    } catch (err) {
+      console.error('Failed to check bookmark:', err)
+    }
   }
 
   const handleToggleBookmark = async () => {
-    const bms = await window.browser.getBookmarks()
-    if (isBookmarked) {
-      const newBms = bms.filter((bm: any) => bm.url !== url)
-      await window.browser.saveBookmarks(newBms)
-    } else {
-      const title = await window.browser.getTabText().then(text => text.split('\n')[0].substring(0, 50) || url)
-      const newBm = { id: Math.random().toString(36).substr(2, 9), title, url }
-      await window.browser.saveBookmarks([...bms, newBm])
+    try {
+      const bms = await window.browser.getBookmarks()
+      const currentBms = Array.isArray(bms) ? bms : []
+      if (isBookmarked) {
+        const newBms = currentBms.filter((bm: any) => bm.url !== url)
+        await window.browser.saveBookmarks(newBms)
+      } else {
+        const title = await window.browser.getTabText().then(text => text.split('\n')[0].substring(0, 50) || url)
+        const newBm = { id: Math.random().toString(36).substr(2, 9), title, url }
+        await window.browser.saveBookmarks([...currentBms, newBm])
+      }
+      setIsBookmarked(!isBookmarked)
+    } catch (err) {
+      console.error('Failed to toggle bookmark:', err)
     }
-    setIsBookmarked(!isBookmarked)
   }
 
   const handleSubmit = (e: React.FormEvent) => {

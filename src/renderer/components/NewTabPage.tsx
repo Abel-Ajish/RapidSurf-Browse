@@ -38,10 +38,14 @@ const NewTabPage: React.FC<NewTabPageProps> = ({ onNavigate, theme }) => {
   }, [])
 
   const loadData = async () => {
-    const history = await window.browser.getHistory()
-    setRecentHistory(history.slice(0, 6))
-    const bms = await window.browser.getBookmarks()
-    setBookmarks(bms.slice(0, 6))
+    try {
+      const history = await window.browser.getHistory()
+      setRecentHistory(Array.isArray(history) ? history.slice(0, 6) : [])
+      const bms = await window.browser.getBookmarks()
+      setBookmarks(Array.isArray(bms) ? bms.slice(0, 6) : [])
+    } catch (err) {
+      console.error('Failed to load NTP data:', err)
+    }
   }
 
   const handleSearch = (e: React.FormEvent) => {

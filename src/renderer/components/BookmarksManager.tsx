@@ -24,8 +24,13 @@ const BookmarksManager: React.FC<BookmarksManagerProps> = ({ onClose, onNavigate
 
   const loadBookmarks = async () => {
     setLoading(true)
-    const data = await window.browser.getBookmarks()
-    setBookmarks(data)
+    try {
+      const data = await window.browser.getBookmarks()
+      setBookmarks(Array.isArray(data) ? data : [])
+    } catch (err) {
+      console.error('Failed to load bookmarks:', err)
+      setBookmarks([])
+    }
     setLoading(false)
   }
 

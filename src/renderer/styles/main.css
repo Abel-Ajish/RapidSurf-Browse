@@ -263,11 +263,8 @@ body {
 
 /* New Tab Page Styles */
 .new-tab-page {
-  position: fixed;
-  top: 80px; /* Below TabBar (40px) + Navbar (40px) */
-  left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100%;
   background-color: var(--bg-color);
   z-index: 1000;
   overflow-y: auto;

@@ -24,8 +24,13 @@ const HistoryManager: React.FC<HistoryManagerProps> = ({ onClose, onNavigate }) 
 
   const loadHistory = async () => {
     setLoading(true)
-    const data = await window.browser.getHistory()
-    setHistory(data)
+    try {
+      const data = await window.browser.getHistory()
+      setHistory(Array.isArray(data) ? data : [])
+    } catch (err) {
+      console.error('Failed to load history:', err)
+      setHistory([])
+    }
     setLoading(false)
   }
 

@@ -5,7 +5,7 @@ export class TabService {
   private activeViewId: string | null = null
   private mainWindow: BrowserWindow
   private sidePanelWidth: number = 0
-  private isAIActive: boolean = false
+  private isAIActive: boolean = true // Default to true to hide native layer until renderer is ready
 
   constructor(mainWindow: BrowserWindow) {
     this.mainWindow = mainWindow
@@ -106,8 +106,10 @@ export class TabService {
 
     this.views.set(id, view)
     
-    if (url === 'rapidsurf://newtab') {
+    if (url === 'rapidsurf://newtab' || url === 'about:blank') {
       view.webContents.loadURL('about:blank')
+      // Immediately hide special tabs so they don't occlude the New Tab Page DOM
+      view.setBounds({ x: 0, y: 0, width: 0, height: 0 })
     } else {
       const formattedUrl = url.startsWith('http') ? url : `https://${url}`
       view.webContents.loadURL(formattedUrl)
@@ -119,6 +121,8 @@ export class TabService {
 
     view.webContents.on('did-stop-loading', () => {
       this.mainWindow.webContents.send('tabs:updated', { id, loading: false })
+      // When a load stops, re-check bounds in case we need to hide/show
+      this.updateBounds()
     })
 
     view.webContents.on('page-title-updated', (_, title) => {
@@ -192,8 +196,8 @@ export class TabService {
     if (!view) return
 
     const url = view.webContents.getURL()
-    if (this.isAIActive || url === 'about:blank' || url.startsWith('rapidsurf://')) {
-      // Hide the native layer so DOM content (New Tab Page, AI overlays) can show
+    // More robust check: empty URL, about:blank, or rapidsurf:// should all hide the native view
+    if (this.isAIActive || !url || url === 'about:blank' || url.startsWith('rapidsurf://')) {
       view.setBounds({ x: 0, y: 0, width: 0, height: 0 })
       return
     }
@@ -208,16 +212,18 @@ export class TabService {
     })
   }
 
-  private navigateActiveTab(url: string) {
+  public navigateActiveTab(url: string) {
     const view = this.getActiveView()
-    if (view) {
-      if (url === 'rapidsurf://newtab') {
-        view.webContents.loadURL('about:blank')
-        this.updateBounds()
-      } else {
-        const formattedUrl = url.startsWith('http') ? url : `https://${url}`
-        view.webContents.loadURL(formattedUrl)
-      }
+    if (!view) return
+
+    if (url === 'rapidsurf://newtab' || url === 'about:blank') {
+      view.webContents.loadURL('about:blank')
+      // Immediately hide special tabs
+      view.setBounds({ x: 0, y: 0, width: 0, height: 0 })
+    } else {
+      const formattedUrl = url.startsWith('http') ? url : `https://${url}`
+      view.webContents.loadURL(formattedUrl)
+      this.updateBounds()
     }
   }
 
