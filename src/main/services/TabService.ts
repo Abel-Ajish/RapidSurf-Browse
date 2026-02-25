@@ -58,7 +58,9 @@ export class TabService {
     
     // Electron's way to handle prefers-color-scheme for web content
     const { nativeTheme: electronNativeTheme } = require('electron')
-    electronNativeTheme.themeSource = theme
+    if (electronNativeTheme) {
+      electronNativeTheme.themeSource = theme
+    }
     
     // Refresh active view bounds
     this.updateBounds()

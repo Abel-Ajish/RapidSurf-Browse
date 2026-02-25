@@ -62,7 +62,8 @@ export class DownloadService {
 
         d.state = state as any
         if (state === 'completed') {
-          d.path = item.getSavePath()
+          const savePath = item.getSavePath()
+          if (savePath) d.path = savePath
         }
 
         this.mainWindow.webContents.send('downloads:updated', Array.from(this.downloads.values()))

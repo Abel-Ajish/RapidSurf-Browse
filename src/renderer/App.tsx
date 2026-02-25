@@ -3,6 +3,7 @@ import Navbar from './components/Navbar'
 import TabBar from './components/TabBar'
 import SidePanel from './components/SidePanel'
 import FindBar from './components/FindBar'
+import SettingsPage from './components/SettingsPage'
 
 export interface Tab {
   id: string
@@ -20,13 +21,14 @@ const App: React.FC = () => {
   const [isSummarizing, setIsSummarizing] = useState(false)
   const [showPanel, setShowPanel] = useState(false)
   const [showFind, setShowFind] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [screenshot, setScreenshot] = useState<string | null>(null)
   const [readingContent, setReadingContent] = useState<string | null>(null)
 
   useEffect(() => {
-    window.browser.setAIActive(isSummarizing || !!summary || !!screenshot || !!readingContent)
-  }, [isSummarizing, summary, screenshot, readingContent])
+    window.browser.setAIActive(isSummarizing || !!summary || !!screenshot || !!readingContent || showSettings)
+  }, [isSummarizing, summary, screenshot, readingContent, showSettings])
 
   useEffect(() => {
     document.body.setAttribute('data-theme', theme)
@@ -159,10 +161,16 @@ const App: React.FC = () => {
           onToggleFind={() => setShowFind(!showFind)}
           onScreenshot={handleScreenshot}
           onReadingMode={handleReadingMode}
+          onOpenSettings={() => setShowSettings(true)}
         />
       </div>
       
-      {showFind && <FindBar onClose={() => setShowFind(false)} />}
+      {showFind && (
+        <FindBar 
+          onClose={() => setShowFind(false)} 
+          rightOffset={showPanel ? 320 : 20}
+        />
+      )}
       
       <div className="content-area">
         {/* BrowserViews are rendered here by the main process */}
@@ -236,24 +244,32 @@ const App: React.FC = () => {
        )}
 
        {readingContent && (
-         <div className="ai-overlay">
-           <div className="ai-modal" style={{ maxWidth: '800px', maxHeight: '80vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-             <div className="ai-modal-header">
-               <h3>Reading Mode</h3>
-               <button onClick={() => {
-                 setReadingContent(null)
-                 window.browser.setAIActive(false)
-               }}>×</button>
-             </div>
-             <div className="ai-modal-body" style={{ overflowY: 'auto', padding: '40px', lineHeight: '1.6', fontSize: '18px', textAlign: 'left' }}>
-               <div style={{ whiteSpace: 'pre-wrap' }}>
-                 {readingContent}
-               </div>
-             </div>
-           </div>
-         </div>
-       )}
-     </div>
+          <div className="ai-overlay">
+            <div className="ai-modal" style={{ maxWidth: '800px', maxHeight: '80vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+              <div className="ai-modal-header">
+                <h3>Reading Mode</h3>
+                <button onClick={() => {
+                  setReadingContent(null)
+                  window.browser.setAIActive(false)
+                }}>×</button>
+              </div>
+              <div className="ai-modal-body" style={{ overflowY: 'auto', padding: '40px', lineHeight: '1.6', fontSize: '18px', textAlign: 'left' }}>
+                <div style={{ whiteSpace: 'pre-wrap' }}>
+                  {readingContent}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showSettings && (
+          <SettingsPage 
+            theme={theme}
+            onToggleTheme={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+            onClose={() => setShowSettings(false)}
+          />
+        )}
+      </div>
    )
  }
 

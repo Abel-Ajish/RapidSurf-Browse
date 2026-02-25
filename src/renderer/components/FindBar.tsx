@@ -3,9 +3,10 @@ import { Search, ChevronUp, ChevronDown, X } from 'lucide-react'
 
 interface FindBarProps {
   onClose: () => void
+  rightOffset?: number
 }
 
-const FindBar: React.FC<FindBarProps> = ({ onClose }) => {
+const FindBar: React.FC<FindBarProps> = ({ onClose, rightOffset = 20 }) => {
   const [text, setText] = useState('')
   const [result, setResult] = useState({ matches: 0, activeMatchOrdinal: 0 })
   const inputRef = useRef<HTMLInputElement>(null)
@@ -46,7 +47,7 @@ const FindBar: React.FC<FindBarProps> = ({ onClose }) => {
   }, [text])
 
   return (
-    <div className="find-bar">
+    <div className="find-bar" style={{ right: `${rightOffset}px` }}>
       <div className="find-bar-input-container">
         <Search size={16} className="find-icon" />
         <input

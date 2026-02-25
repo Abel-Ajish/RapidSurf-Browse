@@ -24,10 +24,10 @@ class WindowManager {
   }
 
   private initApp() {
-    app.name = 'Trae Browser'
+    app.name = 'RapidSurf'
 
     app.whenReady().then(() => {
-      electronApp.setAppUserModelId('com.trae.browser')
+      electronApp.setAppUserModelId('com.rapidsurf.browser')
 
       app.on('browser-window-created', (_, window) => {
         optimizer.watchWindowShortcuts(window)

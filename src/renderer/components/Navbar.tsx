@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ArrowLeft, ArrowRight, RotateCw, Home, Sparkles, Menu, Moon, Sun, Search, Camera, BookOpen } from 'lucide-react'
+import { ArrowLeft, ArrowRight, RotateCw, Home, Sparkles, Menu, Moon, Sun, Search, Camera, BookOpen, Settings } from 'lucide-react'
 
 interface NavbarProps {
   url: string
@@ -15,6 +15,7 @@ interface NavbarProps {
   onToggleFind: () => void
   onScreenshot: () => void
   onReadingMode: () => void
+  onOpenSettings: () => void
 }
 
 const Navbar: React.FC<NavbarProps> = ({ 
@@ -30,7 +31,8 @@ const Navbar: React.FC<NavbarProps> = ({
   onToggleTheme,
   onToggleFind,
   onScreenshot,
-  onReadingMode
+  onReadingMode,
+  onOpenSettings
 }) => {
   const [inputUrl, setInputUrl] = useState(url)
 
@@ -78,6 +80,9 @@ const Navbar: React.FC<NavbarProps> = ({
         </div>
         <div className="nav-btn" onClick={onToggleTheme} title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}>
           {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+        </div>
+        <div className="nav-btn" onClick={onOpenSettings} title="Settings">
+          <Settings size={16} />
         </div>
       </div>
     </div>

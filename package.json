@@ -1,9 +1,9 @@
 {
-  "name": "trae-browser",
+  "name": "rapidsurf",
   "version": "1.0.0",
-  "description": "A production-ready Electron-based Chromium desktop browser",
+  "description": "RapidSurf: A production-ready Electron-based Chromium desktop browser",
   "main": "./out/main/index.js",
-  "author": "Trae AI",
+  "author": "RapidSurf Team",
   "license": "MIT",
   "scripts": {
     "start": "electron-vite preview",

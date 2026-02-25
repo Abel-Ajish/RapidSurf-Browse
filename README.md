@@ -1,4 +1,4 @@
-# Trae Browser
+# RapidSurf
 
 A production-ready Electron-based Chromium desktop browser built with TypeScript, React, and Vite.
 
