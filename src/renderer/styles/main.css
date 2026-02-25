@@ -70,8 +70,13 @@ body {
   min-width: 100px;
   cursor: pointer;
   position: relative;
-  transition: background-color 0.2s;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   opacity: 0.8;
+}
+
+.tab:hover {
+  opacity: 1;
+  background-color: var(--chrome-color);
 }
 
 .tab.active {
@@ -176,11 +181,17 @@ body {
   opacity: 0.7;
   color: var(--text-color);
   pointer-events: auto;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-btn:hover {
   background-color: var(--bg-color);
   opacity: 1;
+  transform: translateY(-1px);
+}
+
+.nav-btn:active {
+  transform: translateY(0) scale(0.9);
 }
 
 .url-bar {
@@ -264,8 +275,12 @@ body {
   padding: 8px 12px;
   gap: 12px;
   z-index: 2500; /* Higher than chrome-area (2000) */
-  animation: slide-down 0.2s ease-out;
-  transition: right 0.3s ease-in-out;
+  animation: slide-down 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s ease;
+}
+
+.find-bar:hover {
+  transform: translateY(2px);
 }
 
 @keyframes slide-down {
@@ -691,6 +706,40 @@ input:checked + .slider:before {
 .settings-btn-danger:hover {
   background-color: #ef4444;
   color: white;
+}
+
+.pin-btn {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-color);
+  opacity: 0.6;
+  transition: all 0.2s;
+}
+
+.pin-btn:hover {
+  opacity: 1;
+  border-color: var(--accent-color);
+  background-color: var(--border-color);
+}
+
+.pin-btn.active {
+  opacity: 1;
+  color: var(--accent-color);
+  background-color: rgba(59, 130, 246, 0.1);
+  border-color: var(--accent-color);
+}
+
+.settings-description {
+  font-size: 13px;
+  opacity: 0.6;
+  margin-bottom: 20px;
 }
 
 .settings-info h4 {

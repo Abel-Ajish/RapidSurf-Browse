@@ -16,6 +16,7 @@ interface NavbarProps {
   onScreenshot: () => void
   onReadingMode: () => void
   onOpenSettings: () => void
+  pinnedIcons: string[]
 }
 
 const Navbar: React.FC<NavbarProps> = ({ 
@@ -32,7 +33,8 @@ const Navbar: React.FC<NavbarProps> = ({
   onToggleFind,
   onScreenshot,
   onReadingMode,
-  onOpenSettings
+  onOpenSettings,
+  pinnedIcons
 }) => {
   const [inputUrl, setInputUrl] = useState(url)
 
@@ -63,27 +65,41 @@ const Navbar: React.FC<NavbarProps> = ({
         />
       </form>
       <div className="nav-actions">
-        <div className="nav-btn" onClick={onToggleFind} title="Find in Page">
-          <Search size={16} />
-        </div>
-        <div className="nav-btn" onClick={onScreenshot} title="Capture Screenshot">
-          <Camera size={16} />
-        </div>
-        <div className="nav-btn" onClick={onReadingMode} title="Reading Mode">
-          <BookOpen size={16} />
-        </div>
-        <div className="nav-btn ai-btn" onClick={onSummarize} title="Summarize Page">
-          <Sparkles size={16} />
-        </div>
-        <div className="nav-btn" onClick={onTogglePanel} title="History & Bookmarks">
-          <Menu size={16} />
-        </div>
-        <div className="nav-btn" onClick={onToggleTheme} title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}>
-          {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
-        </div>
-        <div className="nav-btn" onClick={onOpenSettings} title="Settings">
-          <Settings size={16} />
-        </div>
+        {pinnedIcons.includes('find') && (
+          <div className="nav-btn" onClick={onToggleFind} title="Find in Page">
+            <Search size={16} />
+          </div>
+        )}
+        {pinnedIcons.includes('screenshot') && (
+          <div className="nav-btn" onClick={onScreenshot} title="Capture Screenshot">
+            <Camera size={16} />
+          </div>
+        )}
+        {pinnedIcons.includes('reading') && (
+          <div className="nav-btn" onClick={onReadingMode} title="Reading Mode">
+            <BookOpen size={16} />
+          </div>
+        )}
+        {pinnedIcons.includes('summarize') && (
+          <div className="nav-btn ai-btn" onClick={onSummarize} title="Summarize Page">
+            <Sparkles size={16} />
+          </div>
+        )}
+        {pinnedIcons.includes('panel') && (
+          <div className="nav-btn" onClick={onTogglePanel} title="History & Bookmarks">
+            <Menu size={16} />
+          </div>
+        )}
+        {pinnedIcons.includes('theme') && (
+          <div className="nav-btn" onClick={onToggleTheme} title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}>
+            {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+          </div>
+        )}
+        {pinnedIcons.includes('settings') && (
+          <div className="nav-btn" onClick={onOpenSettings} title="Settings">
+            <Settings size={16} />
+          </div>
+        )}
       </div>
     </div>
   )

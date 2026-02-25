@@ -25,6 +25,7 @@ const App: React.FC = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const [screenshot, setScreenshot] = useState<string | null>(null)
   const [readingContent, setReadingContent] = useState<string | null>(null)
+  const [pinnedIcons, setPinnedIcons] = useState<string[]>(['find', 'screenshot', 'reading', 'summarize', 'panel', 'theme', 'settings'])
 
   useEffect(() => {
     window.browser.setAIActive(isSummarizing || !!summary || !!screenshot || !!readingContent || showSettings)
@@ -162,6 +163,7 @@ const App: React.FC = () => {
           onScreenshot={handleScreenshot}
           onReadingMode={handleReadingMode}
           onOpenSettings={() => setShowSettings(true)}
+          pinnedIcons={pinnedIcons}
         />
       </div>
       
@@ -263,12 +265,18 @@ const App: React.FC = () => {
         )}
 
         {showSettings && (
-          <SettingsPage 
-            theme={theme}
-            onToggleTheme={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-            onClose={() => setShowSettings(false)}
-          />
-        )}
+           <SettingsPage 
+             theme={theme}
+             onToggleTheme={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+             onClose={() => setShowSettings(false)}
+             pinnedIcons={pinnedIcons}
+             onTogglePin={(id) => {
+               setPinnedIcons(prev => 
+                 prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+               )
+             }}
+           />
+         )}
       </div>
    )
  }

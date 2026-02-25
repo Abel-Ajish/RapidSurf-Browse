@@ -1,16 +1,28 @@
 import React, { useState } from 'react'
-import { X, Globe, Palette, Shield, Info, Moon, Sun, Zap, Lock, EyeOff, Trash2, Cpu } from 'lucide-react'
+import { X, Globe, Palette, Shield, Info, Moon, Sun, Zap, Lock, EyeOff, Trash2, Cpu, Pin, PinOff } from 'lucide-react'
 
 interface SettingsPageProps {
   onClose: () => void
   theme: 'light' | 'dark'
   onToggleTheme: () => void
+  pinnedIcons: string[]
+  onTogglePin: (id: string) => void
 }
 
 type Section = 'general' | 'appearance' | 'privacy' | 'advanced' | 'about'
 
-const SettingsPage: React.FC<SettingsPageProps> = ({ onClose, theme, onToggleTheme }) => {
+const SettingsPage: React.FC<SettingsPageProps> = ({ onClose, theme, onToggleTheme, pinnedIcons, onTogglePin }) => {
   const [activeSection, setActiveSection] = useState<Section>('general')
+
+  const toolbarFeatures = [
+    { id: 'find', label: 'Find in Page' },
+    { id: 'screenshot', label: 'Capture Screenshot' },
+    { id: 'reading', label: 'Reading Mode' },
+    { id: 'summarize', label: 'AI Summarize' },
+    { id: 'panel', label: 'History & Bookmarks' },
+    { id: 'theme', label: 'Theme Toggle' },
+    { id: 'settings', label: 'Settings Icon' }
+  ]
 
   const renderSection = () => {
     switch (activeSection) {
@@ -97,6 +109,25 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onClose, theme, onToggleThe
                   <span className="slider"></span>
                 </label>
               </div>
+            </div>
+
+            <h3>Toolbar Pinned Icons</h3>
+            <p className="settings-description">Choose which features appear in the top-right corner next to the search bar.</p>
+            <div className="settings-group">
+              {toolbarFeatures.map(feature => (
+                <div key={feature.id} className="settings-item">
+                  <div className="settings-info">
+                    <h4>{feature.label}</h4>
+                  </div>
+                  <button 
+                    className={`pin-btn ${pinnedIcons.includes(feature.id) ? 'active' : ''}`}
+                    onClick={() => onTogglePin(feature.id)}
+                    title={pinnedIcons.includes(feature.id) ? 'Unpin from toolbar' : 'Pin to toolbar'}
+                  >
+                    {pinnedIcons.includes(feature.id) ? <Pin size={16} /> : <PinOff size={16} />}
+                  </button>
+                </div>
+              ))}
             </div>
           </section>
         )
