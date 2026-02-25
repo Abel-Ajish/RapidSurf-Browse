@@ -37,16 +37,29 @@ const App: React.FC = () => {
   const isNewTab = !activeTab || activeTab?.url === 'rapidsurf://newtab' || activeTab?.url === 'about:blank'
 
   useEffect(() => {
-    window.browser.setAIActive(isSummarizing || !!summary || !!screenshot || !!readingContent || showSettings || showHistory || showBookmarks || isNewTab)
+    try {
+      console.log('Visibility state:', { isSummarizing, summary: !!summary, screenshot: !!screenshot, readingContent: !!readingContent, showSettings, showHistory, showBookmarks, isNewTab })
+      window.browser.setAIActive(isSummarizing || !!summary || !!screenshot || !!readingContent || showSettings || showHistory || showBookmarks || isNewTab)
+    } catch (err) {
+      console.error('Failed to set AI active:', err)
+    }
   }, [isSummarizing, summary, screenshot, readingContent, showSettings, showHistory, showBookmarks, isNewTab])
 
   useEffect(() => {
-    document.body.setAttribute('data-theme', theme)
-    window.browser.setTheme(theme)
+    try {
+      document.body.setAttribute('data-theme', theme)
+      window.browser.setTheme(theme)
+    } catch (err) {
+      console.error('Failed to set theme:', err)
+    }
   }, [theme])
 
   useEffect(() => {
-    window.browser.setPanelWidth(showPanel ? 300 : 0)
+    try {
+      window.browser.setPanelWidth(showPanel ? 300 : 0)
+    } catch (err) {
+      console.error('Failed to set panel width:', err)
+    }
   }, [showPanel])
 
   useEffect(() => {

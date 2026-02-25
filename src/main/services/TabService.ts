@@ -5,7 +5,7 @@ export class TabService {
   private activeViewId: string | null = null
   private mainWindow: BrowserWindow
   private sidePanelWidth: number = 0
-  private isAIActive: boolean = true // Default to true to hide native layer until renderer is ready
+  private isAIActive: boolean = false
 
   constructor(mainWindow: BrowserWindow) {
     this.mainWindow = mainWindow
@@ -196,14 +196,17 @@ export class TabService {
     if (!view) return
 
     const url = view.webContents.getURL()
+    console.log(`Updating bounds for view ${this.activeViewId}. URL: ${url}. AI Active: ${this.isAIActive}`)
+    
     // More robust check: empty URL, about:blank, or rapidsurf:// should all hide the native view
     if (this.isAIActive || !url || url === 'about:blank' || url.startsWith('rapidsurf://')) {
+      console.log('Hiding BrowserView layer (bounds set to 0,0,0,0)')
       view.setBounds({ x: 0, y: 0, width: 0, height: 0 })
       return
     }
 
     const bounds = this.mainWindow.getContentBounds()
-    // Side panel is on the right, so x remains 0, width is reduced.
+    console.log(`Showing BrowserView at bounds: x=0, y=80, w=${bounds.width - this.sidePanelWidth}, h=${bounds.height - 80}`)
     view.setBounds({
       x: 0,
       y: 80, // Navbar + TabBar height
