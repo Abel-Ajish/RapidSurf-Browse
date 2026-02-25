@@ -15,6 +15,8 @@ declare global {
       saveBookmarks: (bookmarks: any[]) => Promise<boolean>
       getHistory: () => Promise<any[]>
       addHistory: (item: any) => Promise<void>
+      getSession: () => Promise<any>
+      saveSession: (session: any) => Promise<boolean>
       getTabText: () => Promise<string>
       setTheme: (theme: 'light' | 'dark') => Promise<void>
       setPanelWidth: (width: number) => Promise<void>
@@ -32,6 +34,7 @@ declare global {
       onFindResult: (callback: (result: { matches: number, activeMatchOrdinal: number }) => void) => () => void
       onDownloadsUpdated: (callback: (downloads: any[]) => void) => () => void
       onHistoryAdded: (callback: (item: any) => void) => () => void
+      onScrollProgress: (callback: (progress: number) => void) => () => void
     }
   }
 }

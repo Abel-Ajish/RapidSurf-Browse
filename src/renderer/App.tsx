@@ -17,6 +17,7 @@ export interface Tab {
 }
 
 const App: React.FC = () => {
+  console.log('App component rendering...')
   const [tabs, setTabs] = useState<Tab[]>([
     { id: '1', title: 'New Tab', url: 'rapidsurf://newtab', active: true, loading: false }
   ])
@@ -102,6 +103,7 @@ const App: React.FC = () => {
     })
 
     return () => {
+      unsubscribeScroll()
       unsubscribeTabs()
       unsubscribeHistory()
     }

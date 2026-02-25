@@ -191,9 +191,15 @@ export class TabService {
   }
 
   public updateBounds() {
-    if (!this.activeViewId) return
+    if (!this.activeViewId) {
+      console.log('No active view to update bounds')
+      return
+    }
     const view = this.views.get(this.activeViewId)
-    if (!view) return
+    if (!view) {
+      console.log(`View ${this.activeViewId} not found in views map`)
+      return
+    }
 
     const url = view.webContents.getURL()
     console.log(`Updating bounds for view ${this.activeViewId}. URL: ${url}. AI Active: ${this.isAIActive}`)
@@ -205,14 +211,18 @@ export class TabService {
       return
     }
 
-    const bounds = this.mainWindow.getContentBounds()
-    console.log(`Showing BrowserView at bounds: x=0, y=80, w=${bounds.width - this.sidePanelWidth}, h=${bounds.height - 80}`)
-    view.setBounds({
-      x: 0,
-      y: 80, // Navbar + TabBar height
-      width: bounds.width - this.sidePanelWidth,
-      height: bounds.height - 80
-    })
+    try {
+      const bounds = this.mainWindow.getContentBounds()
+      console.log(`Showing BrowserView at bounds: x=0, y=80, w=${bounds.width - this.sidePanelWidth}, h=${bounds.height - 80}`)
+      view.setBounds({
+        x: 0,
+        y: 80, // Navbar + TabBar height
+        width: Math.max(0, bounds.width - this.sidePanelWidth),
+        height: Math.max(0, bounds.height - 80)
+      })
+    } catch (err) {
+      console.error('Failed to get content bounds or set view bounds:', err)
+    }
   }
 
   public navigateActiveTab(url: string) {

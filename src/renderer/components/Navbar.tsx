@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ArrowLeft, ArrowRight, RotateCw, Home, Sparkles, Menu, Moon, Sun, Search, Camera, BookOpen, Settings, Clock, Shield, Globe } from 'lucide-react'
+import { ArrowLeft, ArrowRight, RotateCw, Home, Sparkles, Menu, Moon, Sun, Search, Camera, BookOpen, Settings, Clock, Shield, Globe, Star } from 'lucide-react'
 
 interface NavbarProps {
   url: string

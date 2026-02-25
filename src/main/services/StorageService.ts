@@ -19,6 +19,7 @@ export interface HistoryItem {
 export class StorageService {
   private bookmarksPath: string
   private historyPath: string
+  private sessionPath: string
 
   constructor() {
     const userDataPath = app.getPath('userData')
