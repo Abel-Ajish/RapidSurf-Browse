@@ -24,8 +24,10 @@ declare global {
       findInPage: (text: string, options?: any) => Promise<void>
       stopFindInPage: (action: 'clearSelection' | 'keepSelection' | 'activateSelection') => Promise<void>
       capturePage: () => Promise<string | null>
+      setUserAgent: (userAgent: string) => Promise<void>
       getDownloads: () => Promise<any[]>
       openDownloadFolder: () => Promise<void>
+      clearBrowsingData: (options: { cache?: boolean, history?: boolean, cookies?: boolean }) => Promise<boolean>
       onTabUpdated: (callback: (data: { id: string, title?: string, url?: string, loading?: boolean }) => void) => () => void
       onFindResult: (callback: (result: { matches: number, activeMatchOrdinal: number }) => void) => () => void
       onDownloadsUpdated: (callback: (downloads: any[]) => void) => () => void

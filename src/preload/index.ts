@@ -24,8 +24,11 @@ const browserAPI = {
   stopFindInPage: (action: 'clearSelection' | 'keepSelection' | 'activateSelection') => 
     ipcRenderer.invoke('tabs:stop-find-in-page', { action }),
   capturePage: () => ipcRenderer.invoke('tabs:capture-page'),
+  setUserAgent: (userAgent: string) => ipcRenderer.invoke('tabs:set-user-agent', { userAgent }),
   getDownloads: () => ipcRenderer.invoke('downloads:get-all'),
   openDownloadFolder: () => ipcRenderer.invoke('downloads:open-folder'),
+  clearBrowsingData: (options: { cache?: boolean, history?: boolean, cookies?: boolean }) => 
+    ipcRenderer.invoke('storage:clear-browsing-data', options),
   onTabUpdated: (callback: (data: any) => void) => {
     const listener = (_: any, data: any) => callback(data)
     ipcRenderer.on('tabs:updated', listener)

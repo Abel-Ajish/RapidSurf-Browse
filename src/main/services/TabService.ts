@@ -42,6 +42,11 @@ export class TabService {
       const image = await view.webContents.capturePage()
       return image.toDataURL()
     })
+    ipcMain.handle('tabs:set-user-agent', (_, { userAgent }) => {
+      this.views.forEach(view => {
+        view.webContents.setUserAgent(userAgent)
+      })
+    })
   }
 
   public setTheme(theme: 'light' | 'dark') {

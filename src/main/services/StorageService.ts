@@ -39,6 +39,20 @@ export class StorageService {
       if (history.length > 1000) history.pop()
       await this.writeJson(this.historyPath, history)
     })
+
+    ipcMain.handle('storage:clear-history', () => this.writeJson(this.historyPath, []))
+    ipcMain.handle('storage:clear-browsing-data', async (_, options) => {
+      const { session } = require('electron')
+      const defaultSession = session.defaultSession
+      
+      const tasks: Promise<any>[] = []
+      if (options.cache) tasks.push(defaultSession.clearCache())
+      if (options.history) tasks.push(this.writeJson(this.historyPath, []))
+      if (options.cookies) tasks.push(defaultSession.clearStorageData({ storages: ['cookies'] }))
+      
+      await Promise.all(tasks)
+      return true
+    })
   }
 
   private async readJson(path: string, defaultValue: any) {

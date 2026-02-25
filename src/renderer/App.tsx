@@ -275,6 +275,10 @@ const App: React.FC = () => {
                  prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
                )
              }}
+             onNavigate={(url) => {
+               window.browser.go(url)
+               setShowSettings(false)
+             }}
            />
          )}
       </div>
