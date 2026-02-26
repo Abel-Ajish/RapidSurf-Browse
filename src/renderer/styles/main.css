@@ -51,6 +51,28 @@ body {
   z-index: 2000;
   position: relative;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Global Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 5px;
+  border: 2px solid var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
 
 .content-area {
@@ -85,6 +107,7 @@ body {
   position: relative;
   transition: all var(--trans-normal);
   border: 1px solid transparent;
+  line-height: 1;
 }
 
 .tab:hover {
@@ -166,6 +189,16 @@ body {
   gap: 16px;
   background-color: var(--chrome-color);
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.nav-buttons, .nav-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
 }
 
 .nav-btn {
@@ -223,6 +256,9 @@ body {
   font-size: 14px;
   color: var(--text-color);
   font-weight: 400;
+  line-height: normal;
+  display: flex;
+  align-items: center;
 }
 
 /* AI Overlay & Modal */
@@ -412,13 +448,14 @@ body {
 
 .settings-item {
   background-color: var(--chrome-color);
-  padding: 20px 24px;
+  padding: 16px 24px;
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border: 1px solid var(--border-color);
   transition: all var(--trans-normal);
+  gap: 20px;
 }
 
 .settings-item:hover {
@@ -428,13 +465,13 @@ body {
 }
 
 .settings-info h4 {
-  margin: 0 0 4px 0;
+  margin: 0;
   font-size: 16px;
   font-weight: 600;
 }
 
 .settings-info p {
-  margin: 0;
+  margin: 4px 0 0 0;
   font-size: 14px;
   color: var(--text-muted);
 }
@@ -1448,27 +1485,33 @@ input:checked + .slider:before {
   border: 1px solid var(--border-color);
   width: 36px;
   height: 36px;
-  border-radius: 8px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   color: var(--text-color);
-  opacity: 0.6;
-  transition: all 0.2s;
+  opacity: 0.8;
+  transition: all var(--trans-fast);
 }
 
 .pin-btn:hover {
   opacity: 1;
   border-color: var(--accent-color);
-  background-color: var(--border-color);
+  background-color: var(--input-bg);
+  transform: scale(1.05);
+}
+
+.pin-btn:active {
+  transform: scale(0.9);
 }
 
 .pin-btn.active {
   opacity: 1;
-  color: var(--accent-color);
-  background-color: rgba(59, 130, 246, 0.1);
+  color: white;
+  background-color: var(--accent-color);
   border-color: var(--accent-color);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
 .settings-description {
@@ -1478,14 +1521,17 @@ input:checked + .slider:before {
 }
 
 .settings-info h4 {
-  margin: 0 0 5px 0;
-  font-size: 16px;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 .settings-info p {
-  margin: 0;
+  margin: 2px 0 0 0;
   font-size: 13px;
-  opacity: 0.6;
+  opacity: 0.5;
+  line-height: 1.4;
 }
 
 .settings-input, .settings-select {

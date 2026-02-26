@@ -372,6 +372,12 @@ const App: React.FC = () => {
                window.browser.go(url)
                setShowSettings(false)
              }}
+             showBookmarksBar={showBookmarksBar}
+             onToggleBookmarksBar={() => {
+               const newValue = !showBookmarksBar
+               setShowBookmarksBar(newValue)
+               window.browser.setChromeHeight(44 + 48 + (newValue ? 32 : 0))
+             }}
            />
          )}
       </div>

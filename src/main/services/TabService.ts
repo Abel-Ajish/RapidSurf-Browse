@@ -5,6 +5,7 @@ export class TabService {
   private activeViewId: string | null = null
   private mainWindow: BrowserWindow
   private sidePanelWidth: number = 0
+  private chromeHeight: number = 124 // Default with TabBar + Navbar + BookmarksBar
   private isAIActive: boolean = false
 
   constructor(mainWindow: BrowserWindow) {
@@ -24,6 +25,10 @@ export class TabService {
     ipcMain.handle('tabs:set-theme', (_, { theme }) => this.setTheme(theme))
     ipcMain.handle('tabs:set-panel-width', (_, { width }) => {
       this.sidePanelWidth = width
+      this.updateBounds()
+    })
+    ipcMain.handle('tabs:set-chrome-height', (_, { height }) => {
+      this.chromeHeight = height
       this.updateBounds()
     })
     ipcMain.handle('tabs:set-ai-active', (_, { active }) => {
@@ -226,16 +231,12 @@ export class TabService {
 
     try {
       const bounds = this.mainWindow.getContentBounds()
-      // Dynamic Y based on Bookmarks Bar visibility would be better, but for now we'll use a fixed value 
-      // based on the new CSS heights: 44 (TabBar) + 48 (Navbar) + 32 (BookmarksBar) = 124
-      const chromeHeight = 124
-      
-      console.log(`Showing BrowserView at bounds: x=0, y=${chromeHeight}, w=${bounds.width - this.sidePanelWidth}, h=${bounds.height - chromeHeight}`)
+      console.log(`Showing BrowserView at bounds: x=0, y=${this.chromeHeight}, w=${bounds.width - this.sidePanelWidth}, h=${bounds.height - this.chromeHeight}`)
       view.setBounds({
         x: 0,
-        y: chromeHeight,
+        y: this.chromeHeight,
         width: Math.max(0, bounds.width - this.sidePanelWidth),
-        height: Math.max(0, bounds.height - chromeHeight)
+        height: Math.max(0, bounds.height - this.chromeHeight)
       })
     } catch (err) {
       console.error('Failed to get content bounds or set view bounds:', err)

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { X, Globe, Palette, Shield, Info, Moon, Sun, Zap, Lock, EyeOff, Trash2, Cpu, Pin, PinOff } from 'lucide-react'
+import { X, Globe, Palette, Lock, Cpu, Info, Sun, Moon, Pin, PinOff, Eye, EyeOff } from 'lucide-react'
 
 interface SettingsPageProps {
   onClose: () => void
@@ -8,6 +8,8 @@ interface SettingsPageProps {
   pinnedIcons: string[]
   onTogglePin: (id: string) => void
   onNavigate: (url: string) => void
+  showBookmarksBar: boolean
+  onToggleBookmarksBar: () => void
 }
 
 type Section = 'general' | 'appearance' | 'privacy' | 'advanced' | 'about'
@@ -92,6 +94,18 @@ const SettingsPage: React.FC<SettingsPageProps> = ({ onClose, theme, onToggleThe
                     <Moon size={16} /> Dark
                   </button>
                 </div>
+              </div>
+              <div className="settings-item">
+                <div className="settings-info">
+                  <h4>Bookmarks Bar</h4>
+                  <p>Show or hide the quick-access bookmarks bar</p>
+                </div>
+                <button 
+                  className={`pin-btn ${showBookmarksBar ? 'active' : ''}`}
+                  onClick={() => onToggleBookmarksBar()}
+                >
+                  {showBookmarksBar ? <Eye size={16} /> : <EyeOff size={16} />}
+                </button>
               </div>
             </div>
 

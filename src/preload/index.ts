@@ -19,6 +19,7 @@ const browserAPI = {
   getTabText: () => ipcRenderer.invoke('tabs:get-text'),
   setTheme: (theme: 'light' | 'dark') => ipcRenderer.invoke('tabs:set-theme', { theme }),
   setPanelWidth: (width: number) => ipcRenderer.invoke('tabs:set-panel-width', { width }),
+  setChromeHeight: (height: number) => ipcRenderer.invoke('tabs:set-chrome-height', { height }),
   setAIActive: (active: boolean) => ipcRenderer.invoke('tabs:set-ai-active', { active }),
   summarize: (text: string) => ipcRenderer.invoke('ai:summarize', { text }),
   analyzeQuery: (query: string) => ipcRenderer.invoke('ai:analyze-query', { query }),
